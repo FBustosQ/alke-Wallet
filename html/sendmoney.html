@@ -4,78 +4,150 @@
         <meta charset="UTF-8">
         <title>Enviar Dinero</title>
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
-        <style>
-            
-            body {
-                color: white;
-                text-align: center;
-                font-size: 130%;
-                background-repeat: repeat;
-                background-position: center top;
-                background-size: 30%;
-                                
+       <style>
+        /* ============================================
+           ESTILOS PRINCIPALES - E-WALLET
+           ============================================ */
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', 'Segoe UI', sans-serif;
+            background: linear-gradient(145deg, #f8f9fc 0%, #e9ecef 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        /* Contenedor principal */
+        .main-container {
+            max-width: 420px;
+            width: 100%;
+            margin: 0 auto;
+            background: #ffffff;
+            border-radius: 30px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+            padding: 25px 20px 30px;
+        }
+
+        /* ===== HEADER ===== */
+        .header-wallet {
+            margin-bottom: 25px;
+        }
+
+        .header-wallet h2 {
+            font-size: 1.6rem;
+            font-weight: 800;
+            color: #1a1a2e;
+            margin: 0 0 5px 0;
+        }
+        /* ===== TARJETA DE SALDO ===== */
+        .envio-card {
+            background: linear-gradient(135deg, rgb(254, 161, 62), #ff5e00);
+            border-radius: 1.5rem;
+            padding: 2rem 1.75rem 1.75rem;
+            margin-bottom: 1.25rem;
+            color: #ffffff;
+            box-shadow: 0 10px 28px rgba(255, 132, 0, 0.28);
+        }
+
+        .envio-card .form-group {
+            margin-bottom: 1.25rem;
+        }
+
+        .envio-card label {
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            opacity: 0.85;
+            margin-bottom: 0.3rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .envio-card .form-control {
+            background: rgba(255, 255, 255, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 0.9rem;
+            color: #ffffff;
+            font-size: 0.95rem;
+            padding: 0.75rem 1rem;
+            width: 100%;
+            height: auto;
+        }
+        .btn {
+           background: #ff8400;
+            color: white;
+            border: none;
+            border-radius: 1rem;
+            padding: 0.85rem 1.5rem;
+            font-weight: 700;
+            font-size: 1rem;
+            width: 100%;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+            margin: 2%;
+        }
+        
+        .btn:hover {
+            transform: translateY(-3px) scale(1.01);
+            box-shadow: 0 12px 32px rgba(255, 255, 255, 0.3);
+            background-color: gray;
+        }
+
+        .button:active {
+            transform: scale(0.95);
+        }
+        
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 480px) {
+            .main-container {
+                border-radius: 20px;
+                padding: 18px 15px 25px;
             }
-            .cuadroinicial {
-                border-radius: 5rem;
-                box-shadow:0 8px 16px 0 rgba(0,0,0,0.4);
-                background-color:rgb(255, 132, 0);
-                width: 60%;
-                padding: 5%;
+
+            .saldo-card .saldo-monto {
+                font-size: 1.8rem;
             }
-            h2 {
-                font-size: 200%;
-                font-weight: bold;
-                border-radius: 2%;
-                margin-bottom: 3%;
-                color: white;
-                -webkit-text-stroke-width: 0.1rem;
-                -webkit-text-stroke-color: gray;
+
+            .accion-item {
+                padding: 10px 5px;
             }
-            button {
-                margin-top: 1rem;
-                font-size: 140%;
-                
-                
-                
+
+            .accion-item .icono-wrapper {
+                width: 42px;
+                height: 42px;
             }
-            label {
-                width: 100%;
-                margin-top: 1rem;
-                color: black;
+
+            .accion-item .icono-wrapper .material-icons {
+                font-size: 22px;
             }
-            .parrafo {
-               background-color: rgba(116, 113, 113, 0.3);
-               border-radius: 0.4rem; 
-               padding: 5%;
-            }
-            .fondocontactos {
-                background-color:rgba(239, 235, 235, 0.4);
-                color: black;
-                
-            }
-            ul {
-                text-align: justify;
-            }
-            h3 {
-                color: black;
-                -webkit-text-stroke-width: 0.1rem;
-                -webkit-text-stroke-color: gray;
-                font-weight: bold;
-                margin-bottom: 3%;
-                font-size: 150%;
-            }
-            
-            
+        }
         </style>
     </head>
     <body>
-    <div class="container my-3 cuadroinicial" style="padding-top: 3rem;">
-        <h2>Enviar Dinero</h2>
-        <label class="form-label" for="buscar">Buscar en la agenda de transferencias: </label>
-        <input type="text" id="buscar" class="form-control">
+    <div class="main-container my-3 cuadroinicial">
+        <div class="header-wallet">
+            <h2>Enviar Dinero</h2>
+        </div>
+        <div class="envio-card">
+            <label class="form-label form-group" for="buscar">Buscar en la agenda de transferencias: </label>
+            <input type="text" id="buscar" class="form-control" >
+        </div>
         <button type="button" class="btn btn-secondary">Buscar</button>
         <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#modalAgregarContacto">Agregar nuevo contacto</button>
-    </div>
+    
     <div class="container my-3 fondocontactos">
         <h3>Contactos</h3>
         <ul id="contactList" class="list-group">
@@ -100,6 +172,7 @@
         <div>
             <p id="leyendaEnvio" style="display: none;"></p>
         </div>
+    </div>
     </div>
 
     <!-- Modal Agregar Contacto -->
