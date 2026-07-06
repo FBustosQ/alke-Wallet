@@ -4,63 +4,137 @@
         <meta charset="UTF-8">
         <title>Menú principal</title>
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
         <style>
-             body {
-                color: white;
-                text-align: center;
-                font-size: 130%;
-                background-repeat: repeat;
-                background-position: center top;
-                background-size: 30%;
-                                
+        /* ============================================
+           ESTILOS PRINCIPALES - E-WALLET
+           ============================================ */
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', 'Segoe UI', sans-serif;
+            background: linear-gradient(145deg, #f8f9fc 0%, #e9ecef 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        /* Contenedor principal */
+        .main-container {
+            max-width: 420px;
+            width: 100%;
+            margin: 0 auto;
+            background: #ffffff;
+            border-radius: 30px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+            padding: 25px 20px 30px;
+        }
+
+        /* ===== HEADER ===== */
+        .header-wallet {
+            margin-bottom: 25px;
+        }
+
+        .header-wallet h2 {
+            font-size: 1.6rem;
+            font-weight: 800;
+            color: #1a1a2e;
+            margin: 0 0 5px 0;
+        }
+        /* ===== TARJETA DE SALDO ===== */
+        .saldo-card {
+            background: linear-gradient(135deg, rgb(255, 155, 48), rgb(255, 132, 0));
+            border-radius: 20px;
+            padding: 25px 20px;
+            margin-bottom: 25px;
+            color: white;
+            box-shadow: 0 10px 25px rgba(255, 132, 0, 0.3);
+        }
+
+        .saldo-card .saldo-label {
+            font-size: 0.8rem;
+            opacity: 0.8;
+            margin-bottom: 4px;
+        }
+
+        .saldo-card .saldo-monto {
+            font-size: 2.2rem;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+            margin: 0;
+        }
+
+        
+        .btn:hover {
+            transform: translateY(-5px) scale(1.02);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12) !important;
+        }
+
+        .button:active {
+            transform: scale(0.95);
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 480px) {
+            .main-container {
+                border-radius: 20px;
+                padding: 18px 15px 25px;
             }
-            .cuadroinicial {
-                border-radius: 5rem;
-                box-shadow:0 8px 16px 0 rgba(0,0,0,0.4);
-                background-color:rgb(255, 132, 0);
-                width: 60%;
+
+            .saldo-card .saldo-monto {
+                font-size: 1.8rem;
             }
-            h2 {
-                font-size: 160%;
-                font-weight: bold;
-                border-radius: 5rem;
-                margin-bottom: 5%;
-                color: white;
-                -webkit-text-stroke-width: 0.1rem;
-                -webkit-text-stroke-color: gray
+
+            .accion-item {
+                padding: 10px 5px;
             }
-            button {
-                margin-top: 1rem;
-                width: 60%;
-                font-size: 140%;
-                
+
+            .accion-item .icono-wrapper {
+                width: 42px;
+                height: 42px;
             }
-            label {
-                width: 30%;
-                margin-top: 1rem;
+
+            .accion-item .icono-wrapper .material-icons {
+                font-size: 22px;
             }
-            .parrafo {
-               background-color: rgba(255, 255, 255, 0.614);
-               border-radius: 0.4rem; 
-               padding: 5%;
-               color: rgb(172, 90, 2);
-            }
-            .redireccion {
-                font-size: 80%;
-                color: black;
-                padding-top: 3%;
-            }
-        </style>
+        }
+    </style>
     </head>
     <body>
-        <div class="container p-5 my-5 border cuadroinicial">
-            <h2>Menú principal</h2>
-            <p class="parrafo">Dinero Actual en cuenta: $ <span id="dineroActual"></span></p>
-            <button type="button" class="btn btn-secondary" id="depositar">Depositar</button>
-            <button type="button" class="btn btn-secondary" id="enviarDinero">Enviar Dinero</button>
-            <button type="button" class="btn btn-secondary" id="ultimosMovimientos">Últimos movimientos</button>
-            <p id="leyenda" class="redireccion"></p>
-        </div>
+        <header>    
+            <div class="main-container header-wallet ">
+                <h2>Menú principal</h2>
+                <div class="saldo-card">
+                    <p class="saldo-label">Dinero Actual en cuenta:</p>
+                    <p class="saldo-monto">$<span id="dineroActual"></span></p>
+                </div>
+                <nav class="navbar navbar-expand-sm justify-content-center ">
+                    <ul  class="navbar-nav nav-justified">   
+                            <li class="nav-item " >
+                                <button type="button" class="btn btn-block w-100 h-100"  id="depositar">Depositar<br>
+                                <i class="material-icons">&#xe84f;</i></button>
+                            </li> 
+                            <li class="nav-item"> 
+                                <button type="button" class="btn btn-block w-100 h-100"" id="enviarDinero">Enviar Dinero <br> 
+                                <i class="material-icons">&#xe8d4;</i></button>
+                            </li> 
+                            <li class="nav-item "> 
+                                <button type="button" class="btn btn-block w-100 h-100"" id="ultimosMovimientos"> Últimos movimientos<br>
+                                <i class="material-icons">&#xe1b2;</i></button>
+                            </li> 
+                    </ul> 
+                </nav>
+                <p id="leyenda" class="redireccion"></p>          
+            </div>
+        </header>
+        
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
         <script>
             window.onload = function() {
