@@ -1,4 +1,4 @@
-Proyecto de portafolio - Billereta digital:
+Proyecto de portafolio - Billetera digital:
 
 Link de enlace a github:
 
