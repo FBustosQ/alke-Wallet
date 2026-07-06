@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Últimos movimientos</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
+    <style>
+        .badge-deposito {
+            background-color: #198754; /* Verde para depósitos */
+        }
+        .badge-transferencia {
+            background-color: #dc3545; /* Rojo para transferencias */
+        }
+        .monto-positivo {
+            color: #198754;
+            font-weight: bold;
+        }
+        .monto-negativo {
+            color: #dc3545;
+            font-weight: bold;
+        }
+        body {
+                color: black;
+                text-align: center;
+                font-size: 130%;
+                                
+            }
+            
+            h2 {
+                font-size: 160%;
+                font-weight: bold;
+                box-shadow:0rem 0rem 1rem 0rem rgba(78, 69, 69, 0.2);
+                border-radius: 5rem;
+                margin-bottom: 5%;
+            }
+            button {
+                margin-top: 1rem;
+                width: 60%;
+                font-size: 140%;
+                
+            }
+            label {
+                width: 100%;
+                margin-top: 1rem;
+            }
+            .parrafo {
+               background-color: rgba(116, 113, 113, 0.3);
+               border-radius: 0.4rem; 
+               padding: 5%;
+            }
+            .fondocontactos {
+                background-color:rgba(239, 235, 235, 0.4);
+            }
+            form {
+                margin-bottom: 3%;
+            }
+    
+    </style>
+</head>
+<body>
+    <div class="container p-5 my-5 border fondocontactos">
+        <h2>Últimos movimientos</h2>
+        
+        <!-- Balance actual -->
+        <div class="alert alert-info mb-3">
+            <strong>Balance actual: $<span id="balanceActual">0</span></strong>
+        </div>
+        
+        <!-- Filtro mejorado -->
+        <form>
+            <select id="filtroSelect" class="custom-select">
+                <option value="todos">Todos los movimientos</option>
+                <option value="transferencia">Transferencias</option>
+                <option value="deposito">Depósitos</option>
+                <option value="compra">Compras</option>
+            </select>
+        </form>
+        
+        <!-- Lista de transferencias -->
+        <ul id="historialTransferencias" class="list-group">
+            <li></li>
+            <!-- Las transferencias se cargarán aquí dinámicamente -->
+        </ul>
+        
+        <a href="./menu.html">
+            <button type="button" class="btn btn-secondary my-3">Volver al Menú Principal</button>
+        </a>
+    </div>
+    
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+   <script>
+        // Función para obtener historial desde localStorage (formato con separadores)
+        function obtenerHistorial() {
+            let datos = localStorage.getItem("historialTransferencia");
+            if (!datos) return [];
+            
+            let items = datos.split("||");
+            let historial = [];
+            
+            for (let i = 0; i < items.length; i++) {
+                let partes = items[i].split("|");
+                if (partes.length === 5) {
+                    historial.push({
+                        nombre: partes[0],
+                        detalles: partes[1],
+                        monto: Number(partes[2]),
+                        fecha: partes[3],
+                        tipo: partes[4]
+                    });
+                }
+            }
+            return historial;
+        }
+
+        // Generar lista con filtro
+        function generarLista() {
+            let historial = obtenerHistorial();
+            let filtro = $('#filtroSelect').val();
+            let lista = document.getElementById("historialTransferencias");
+            
+            // Actualizar balance desde localStorage
+            let balance = localStorage.getItem("dineroActual");
+            if (balance === null) {
+                // Si no existe, calcular desde el historial
+                balance = 0;
+                for (let i = 0; i < historial.length; i++) {
+                    if (historial[i].tipo === 'deposito') {
+                        balance += historial[i].monto;
+                    } else {
+                        balance -= historial[i].monto;
+                    }
+                }
+                localStorage.setItem("dineroActual", balance.toString());
+            }
+            document.getElementById("balanceActual").textContent = "$" + Number(balance).toLocaleString();
+            
+            // Limpiar lista
+            lista.innerHTML = "";
+            
+            if (historial.length === 0) {
+                lista.innerHTML = "<li class='list-group-item text-center'>No hay transacciones</li>";
+                return;
+            }
+            
+            // Filtrar - CORREGIDO: ahora maneja tanto "transferencia" como "transferencias"
+            let filtrados = [];
+            if (filtro === 'todos') {
+                filtrados = historial;
+            } else {
+                for (let i = 0; i < historial.length; i++) {
+                    // Normalizar el tipo para comparación
+                    let tipoNormalizado = historial[i].tipo.toLowerCase();
+                    // Si el filtro es "transferencia", también incluir "transferencias"
+                    if (filtro === 'transferencia') {
+                        if (tipoNormalizado === 'transferencia' || tipoNormalizado === 'enviado') {
+                            filtrados.push(historial[i]);
+                        }
+                    } else if (historial[i].tipo === filtro) {
+                        filtrados.push(historial[i]);
+                    }
+                }
+            }
+            
+            // Ordenar por fecha (más recientes primero)
+            filtrados.sort(function(a, b) {
+                return new Date(b.fecha) - new Date(a.fecha);
+            });
+            
+            // Mostrar
+            if (filtrados.length === 0) {
+                lista.innerHTML = "<li class='list-group-item text-center text-muted'>No hay transacciones de este tipo</li>";
+                return;
+            }
+            
+            for (let i = 0; i < filtrados.length; i++) {
+                let t = filtrados[i];
+                let esDeposito = t.tipo === "deposito";
+                let esCompra = t.tipo === "compra";
+                let esTransferencia = t.tipo === "transferencia" || t.tipo === "transferencias";
+                
+                let li = document.createElement("li");
+                li.className = "list-group-item";
+                
+                let icono = esDeposito ? '💰' : esCompra ? '🛒' : '🔄';
+                let badgeTexto = esDeposito ? 'Depósito' : esCompra ? 'Compra' : 'Transferencia';
+                let badgeClase = esDeposito ? 'badge-deposito' : esCompra ? 'badge-compra' : 'badge-transferencia';
+                let montoClase = esDeposito ? 'monto-positivo' : 'monto-negativo';
+                let signo = esDeposito ? '+' : '-';
+                
+                li.innerHTML = `
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <strong>${icono} ${t.nombre}</strong>
+                            <br><small class="text-muted">${t.detalles || ''} - 📅 ${t.fecha}</small>
+                        </div>
+                        <div class="text-end">
+                            <span class="${montoClase}">
+                                ${signo}$${Number(t.monto).toLocaleString()}
+                            </span>
+                            <br>
+                            <span class="badge ${badgeClase}">
+                                ${badgeTexto}
+                            </span>
+                        </div>
+                    </div>
+                `;
+                lista.appendChild(li);
+            }
+        }
+
+        // Función para depurar - ver qué hay en localStorage (opcional)
+        function verDatosStorage() {
+            console.log("historialTransferencia:", localStorage.getItem("historialTransferencia"));
+            console.log("dineroActual:", localStorage.getItem("dineroActual"));
+            
+            let historial = obtenerHistorial();
+            console.log("Tipos de transacciones encontrados:", 
+                historial.map(item => item.tipo).filter((v, i, a) => a.indexOf(v) === i)
+            );
+        }
+
+        // Evento cuando el documento está listo
+        $(document).ready(function() {
+            generarLista();
+            $('#filtroSelect').on('change', generarLista);
+            
+            // Para depuración (descomentar si es necesario)
+            // verDatosStorage();
+        });
+    </script>
+</body>
+</html>

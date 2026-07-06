@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html  lang="es">
+    <head>
+        <meta charset="UTF-8">
+        <title>Menú principal</title>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
+        <style>
+             body {
+                color: white;
+                text-align: center;
+                font-size: 130%;
+                background-repeat: repeat;
+                background-position: center top;
+                background-size: 30%;
+                                
+            }
+            .cuadroinicial {
+                border-radius: 5rem;
+                box-shadow:0 8px 16px 0 rgba(0,0,0,0.4);
+                background-color:rgb(255, 132, 0);
+                width: 60%;
+            }
+            h2 {
+                font-size: 160%;
+                font-weight: bold;
+                border-radius: 5rem;
+                margin-bottom: 5%;
+                color: white;
+                -webkit-text-stroke-width: 0.1rem;
+                -webkit-text-stroke-color: gray
+            }
+            button {
+                margin-top: 1rem;
+                width: 60%;
+                font-size: 140%;
+                
+            }
+            label {
+                width: 30%;
+                margin-top: 1rem;
+            }
+            .parrafo {
+               background-color: rgba(255, 255, 255, 0.614);
+               border-radius: 0.4rem; 
+               padding: 5%;
+               color: rgb(172, 90, 2);
+            }
+            .redireccion {
+                font-size: 80%;
+                color: black;
+                padding-top: 3%;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="container p-5 my-5 border cuadroinicial">
+            <h2>Menú principal</h2>
+            <p class="parrafo">Dinero Actual en cuenta: $ <span id="dineroActual"></span></p>
+            <button type="button" class="btn btn-secondary" id="depositar">Depositar</button>
+            <button type="button" class="btn btn-secondary" id="enviarDinero">Enviar Dinero</button>
+            <button type="button" class="btn btn-secondary" id="ultimosMovimientos">Últimos movimientos</button>
+            <p id="leyenda" class="redireccion"></p>
+        </div>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script>
+            window.onload = function() {
+            let balance = localStorage.getItem("dineroActual");
+            document.getElementById("balanceActual").textContent = balance ? Number(balance).toLocaleString() : "0";
+            };
+            $(document).ready(function(){
+                const dineroGuardado = localStorage.getItem("dineroActual");
+                
+                if ("#dineroGuardado") {
+                    $("#dineroActual").text(Number(dineroGuardado).toLocaleString("ES-cl"));
+                } else {
+                    $("#dineroActual").text("0");
+                    }
+
+                // Función reutilizable para redirecciones
+                function redirigirConMensaje(mensaje, url) {
+                    $("#leyenda").text(mensaje).slideDown('fast');
+                    setTimeout(function() {
+                        window.location.href = url;
+                    }, 1000);
+
+            }
+                // Eventos click para los botones
+            $("#depositar").click(function() {
+                redirigirConMensaje("Redirigiendo a Depositar", "./deposit.html");
+            });
+
+            $("#enviarDinero").click(function() {
+                redirigirConMensaje("Redirigiendo a Enviar Dinero", "./sendmoney.html");
+            });
+
+            $("#ultimosMovimientos").click(function() {
+                redirigirConMensaje("Redirigiendo a Últimos Movimientos", "./transactions.html");
+            });
+
+        });
+        </script>
+    </body>
+</html>

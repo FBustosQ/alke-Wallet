@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html  lang="es">
+    <head>
+        <meta charset="UTF-8">
+        <title>Enviar Dinero</title>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
+        <style>
+            
+            body {
+                color: white;
+                text-align: center;
+                font-size: 130%;
+                background-repeat: repeat;
+                background-position: center top;
+                background-size: 30%;
+                                
+            }
+            .cuadroinicial {
+                border-radius: 5rem;
+                box-shadow:0 8px 16px 0 rgba(0,0,0,0.4);
+                background-color:rgb(255, 132, 0);
+                width: 60%;
+                padding: 5%;
+            }
+            h2 {
+                font-size: 200%;
+                font-weight: bold;
+                border-radius: 2%;
+                margin-bottom: 3%;
+                color: white;
+                -webkit-text-stroke-width: 0.1rem;
+                -webkit-text-stroke-color: gray;
+            }
+            button {
+                margin-top: 1rem;
+                font-size: 140%;
+                
+                
+                
+            }
+            label {
+                width: 100%;
+                margin-top: 1rem;
+                color: black;
+            }
+            .parrafo {
+               background-color: rgba(116, 113, 113, 0.3);
+               border-radius: 0.4rem; 
+               padding: 5%;
+            }
+            .fondocontactos {
+                background-color:rgba(239, 235, 235, 0.4);
+                color: black;
+                
+            }
+            ul {
+                text-align: justify;
+            }
+            h3 {
+                color: black;
+                -webkit-text-stroke-width: 0.1rem;
+                -webkit-text-stroke-color: gray;
+                font-weight: bold;
+                margin-bottom: 3%;
+                font-size: 150%;
+            }
+            
+            
+        </style>
+    </head>
+    <body>
+    <div class="container my-3 cuadroinicial" style="padding-top: 3rem;">
+        <h2>Enviar Dinero</h2>
+        <label class="form-label" for="buscar">Buscar en la agenda de transferencias: </label>
+        <input type="text" id="buscar" class="form-control">
+        <button type="button" class="btn btn-secondary">Buscar</button>
+        <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#modalAgregarContacto">Agregar nuevo contacto</button>
+    </div>
+    <div class="container my-3 fondocontactos">
+        <h3>Contactos</h3>
+        <ul id="contactList" class="list-group">
+            <li class="list-group-item">
+                <input type="radio" name="contacto" value="John Doe">
+                <div class="contact-info">
+                    <span class="contact-name">John Doe</span>
+                    <span class="contact-details">CBU: 123456789, Alias: john.doe, Banco: ABC Bank</span>
+                </div>
+            </li>
+            <li class="list-group-item">
+                <input type="radio" name="contacto" value="Jane Smith">
+                <div class="contact-info">
+                    <span class="contact-name">Jane Smith</span>
+                    <span class="contact-details">CBU: 987654321, Alias: jane.smith, Banco: XYZ Bank</span>
+                </div>
+            </li>
+        </ul>
+
+        <button class="btn btn-secondary" style="margin-top: 1rem; display: none;" id="enviarDineroBoton" data-toggle="modal" data-target="#modalDepositarA">Enviar dinero</button>
+        <button class="btn btn-secondary" style="margin-top: 1rem;" onclick="window.location.href='menu.html'">Volver al Menú Principal</button>
+        <div>
+            <p id="leyendaEnvio" style="display: none;"></p>
+        </div>
+    </div>
+
+    <!-- Modal Agregar Contacto -->
+    <div class="modal fade" id="modalAgregarContacto">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" style="color: black; width: 100%;">Agregar Contacto</h4>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+                <div class="modal-body" style="margin-left: 2rem; margin-right: 2rem; text-align: left;">
+                    <label class="form-label" for="nombreContacto">Nombre contacto:</label>
+                    <input class="form-control" type="text" id="nombreContacto">
+                    <label class="form-label" for="cbu">CBU:</label>
+                    <input class="form-control" type="number" id="cbu">
+                    <label class="form-label" for="alias">Alias:</label>
+                    <input type="text" id="alias" class="form-control">
+                    <label class="form-label" for="banco">Banco:</label>
+                    <input class="form-control" type="text" id="banco">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" onclick="agregarContacto()">Agregar Contacto</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Depositar -->
+    <div class="modal fade" id="modalDepositarA">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" style="color: black; width: 100%;">Depositar</h4>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+                <div class="modal-body" style="margin-left: 2rem; margin-right: 2rem; text-align: left;">
+                    <label class="form-label" for="cantidadDeposito">Cantidad:</label>
+                    <input class="form-control" type="number" id="cantidadDeposito" min="0.01" >                   
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" onclick="enviarDinero()">Confirmar</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+
+    <script>
+        // Función agregar contacto (global)
+        function agregarContacto() {
+            let nombre = document.getElementById("nombreContacto").value;
+            let cbu = document.getElementById("cbu").value;
+            let alias = document.getElementById("alias").value;
+            let banco = document.getElementById("banco").value;
+
+            // Validar que los campos no estén vacíos
+            if (!nombre.trim() || !cbu.trim() || !alias.trim() || !banco.trim()) {
+                alert("Por favor complete todos los campos");
+                return;
+            }
+
+            let lista = document.getElementById("contactList");
+
+            lista.innerHTML += `<li class="list-group-item">
+                                    <input type="radio" name="contacto" value="${nombre}">
+                                    <div class="contact-info">
+                                        <span class="contact-name">${nombre}</span>
+                                        <span class="contact-details">CBU: ${cbu}, Alias: ${alias}, Banco: ${banco}</span>
+                                    </div>
+                                </li>`;
+
+            alert("Contacto agregado");
+
+            document.getElementById("nombreContacto").value = "";
+            document.getElementById("cbu").value = "";
+            document.getElementById("alias").value = "";
+            document.getElementById("banco").value = "";
+
+            // Cerrar modal con Bootstrap 4
+            $('#modalAgregarContacto').modal('hide');
+        }
+
+        // Función para obtener historial como array de objetos
+        function obtenerHistorial() {
+            let historialString = localStorage.getItem("historialTransferencia");
+            
+            if (!historialString) {
+                return [];
+            }
+            
+            // Dividir por el separador doble "||"
+            let items = historialString.split("||");
+            
+            // Convertir cada string a objeto
+            let historial = [];
+            for (let i = 0; i < items.length; i++) {
+                let partes = items[i].split("|");
+                if (partes.length === 5) {
+                    historial.push({
+                        nombre: partes[0],
+                        detalles: partes[1],
+                        monto: Number(partes[2]),
+                        fecha: partes[3],
+                        tipo: partes[4]
+                    });
+                }
+            }
+            
+            return historial;
+        }
+
+        // Función para guardar transferencia
+        function guardarTransferencia(transferencia) {
+            let historial = obtenerHistorial();
+            
+            // Agregar nueva transferencia al array
+            historial.push(transferencia);
+            
+            // Guardar como string (usando un formato especial)
+            let historialString = historial.map(function(item) {
+                return item.nombre + "|" + item.detalles + "|" + item.monto + "|" + item.fecha + "|" + item.tipo;
+            }).join("||");
+            
+            localStorage.setItem("historialTransferencia", historialString);
+        }
+
+        // Función enviar dinero 
+        function enviarDinero() {
+            // Obtener contacto seleccionado
+            let contactoSeleccionado = document.querySelector('input[name="contacto"]:checked');
+            
+            if (!contactoSeleccionado) {
+                alert("Debe seleccionar un contacto");
+                return;
+            }
+
+            let montoTransferencia = Number(document.getElementById("cantidadDeposito").value);
+
+            if (!montoTransferencia || montoTransferencia <= 0) {
+                alert("Ingrese un monto válido");
+                return;
+            }
+
+            // Obtener balance actual (si no existe, es 0)
+            let balanceActual = localStorage.getItem("dineroActual");
+            let balance = balanceActual ? Number(balanceActual) : 0;
+
+            if (montoTransferencia > balance) {
+                alert("No tiene saldo suficiente");
+                return;
+            }
+
+            if (confirm("¿Está seguro de realizar la transferencia?")) {
+                let contactoItem = contactoSeleccionado.closest('.list-group-item');
+                let nombreContacto = contactoItem.querySelector('.contact-name').textContent;
+                let detallesContacto = contactoItem.querySelector('.contact-details').textContent;
+
+                // Actualizar balance
+                let nuevoBalance = balance - montoTransferencia;
+                localStorage.setItem("dineroActual", nuevoBalance.toString());
+
+                // Crear objeto de transferencia
+                let transferencia = {
+                    nombre: nombreContacto,
+                    detalles: detallesContacto,
+                    monto: montoTransferencia,
+                    fecha: new Date().toLocaleString(),
+                    tipo: "enviado"
+                };
+
+                // Guardar en historial
+                guardarTransferencia(transferencia);
+                 
+
+                // Cerrar modal
+                $('#modalDepositarA').modal('hide');
+                
+                $("#leyendaEnvio").text("Depósito exitoso, redirigiendo a Transferencias")
+                $("#leyendaEnvio").show();
+                // Limpiar campo
+                document.getElementById("cantidadDeposito").value = "";
+                
+                // Redirigir
+                $("#leyendaEnvio").text("Depósito exitoso, redirigiendo a Transferencias").slideDown('fast');
+                    setTimeout(function() {
+                        window.location.href = "./transactions.html";
+                    }, 3000);
+            }
+        }
+
+        // buscador
+        $(document).ready(function(){
+            // Buscador
+            $("#buscar").on("keyup", function() {
+                var value = $(this).val().toLowerCase();
+                $("#contactList li").filter(function() {
+                    $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1);
+                });
+            });
+
+            // Mostrar botón de enviar dinero cuando se selecciona un contacto
+            $('input[name="contacto"]').on('change', function() {
+                $("#enviarDineroBoton").show();
+            });
+
+            // Limpiar campo de cantidad al abrir el modal de depósito
+            $('#modalDepositarA').on('show.bs.modal', function() {
+                document.getElementById("cantidadDeposito").value = "";
+            });
+        });
+    </script>
+</body>
+</html>
